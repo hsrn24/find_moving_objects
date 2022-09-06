@@ -737,7 +737,7 @@ void Bank::getOldIndices(const float range_min,
   // Did we find a valid object?
   unsigned int misses = consecutive_failures_to_find_object;
   if (width_in_points < bank_argument.object_threshold_min_nr_points  ||
-      bank_argument.object_threshold_max_delta_width_in_points < abs(width_in_points - object_width_in_points)  ||
+      bank_argument.object_threshold_max_delta_width_in_points < abs(static_cast<int>(width_in_points - object_width_in_points))  ||
       bank_argument.object_threshold_bank_tracking_max_delta_distance  < 
         fabs(range_sum / width_in_points - *range_sum_old / object_width_in_points))
     // range_sum_old holds the range sum of the previous (newer) scanned object
