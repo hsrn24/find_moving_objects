@@ -10,7 +10,7 @@
   <url type="website">http://www.ros.org/wiki/find_moving_objects</url>
   <url type="sources">https://github.com/andreasgustavsson/find_moving_objects</url>
   
-  
+
   
   <!-- The *depend tags are used to specify dependencies -->
   <!-- Dependencies can be catkin packages or system dependencies -->
@@ -70,6 +70,9 @@
   <build_depend>nodelet</build_depend>
   <build_export_depend>nodelet</build_export_depend>
   <exec_depend>nodelet</exec_depend>
+  
+  <depend>dynamic_reconfigure</depend>
+
   <export>
     <nodelet plugin="${prefix}/nodelet_plugins.xml" />
   </export>

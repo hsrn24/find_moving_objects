@@ -5,7 +5,7 @@
   <node pkg="rviz" 
         type="rviz" 
         name="rviz" 
-        args="--display-config $(find find_moving_objects)/rviz/moving_objects.rviz"
+        args="--display-config $(find find_moving_objects)/rviz/robo_cart_moving_objects.rviz"
         />
   
 </launch>

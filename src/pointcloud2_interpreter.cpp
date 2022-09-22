@@ -123,6 +123,7 @@ PointCloud2InterpreterNode::PointCloud2InterpreterNode()
   tf_filter = NULL;
   tf_listener = NULL;
   tf_buffer = NULL;
+  DynamicReconfigureInit();
   
 #ifdef NODE
   onInit();
@@ -521,6 +522,64 @@ void PointCloud2InterpreterNode::onInit()
 #endif
           this, _1) );
 }
+
+/* DYNAMIC RECONFIGURE */
+#ifdef NODELET
+# ifdef PC2ARRAY
+void PointCloud2ArrayInterpreterNodelet::DynamicReconfigureInit()
+# else
+void PointCloud2InterpreterNodelet::DynamicReconfigureInit()
+# endif
+#endif
+#ifdef NODE
+# ifdef PC2ARRAY
+void PointCloud2ArrayInterpreterNode::DynamicReconfigureInit()
+# else
+void PointCloud2InterpreterNode::DynamicReconfigureInit()
+# endif
+#endif
+{
+  dynamic_reconfigure::Server<find_moving_objects::FindMovingObjectsPointCloud2Config>::CallbackType f;
+  #ifdef NODELET
+  # ifdef PC2ARRAY
+  f = boost::bind(&PointCloud2ArrayInterpreterNodelet::DynamicReconfigureCallback, this, _1, _2);
+  # else
+  f = boost::bind(&PointCloud2InterpreterNodelet::DynamicReconfigureCallback, this, _1, _2);
+  # endif
+  #endif
+  #ifdef NODE
+  # ifdef PC2ARRAY
+  f = boost::bind(&PointCloud2ArrayInterpreterNode::DynamicReconfigureCallback, this, _1, _2);
+  # else
+  f = boost::bind(&PointCloud2InterpreterNode::DynamicReconfigureCallback, this, _1, _2);
+  # endif
+  #endif
+  dynamic_reconfigure_server_.setCallback(f);
+  std::cout << "Dynamic Reconfigure Initialized" << std::endl;
+}
+
+#ifdef NODELET
+# ifdef PC2ARRAY
+void PointCloud2ArrayInterpreterNodelet::DynamicReconfigureCallback(find_moving_objects::FindMovingObjectsPointCloud2Config &config, uint32_t level)
+# else
+void PointCloud2InterpreterNodelet::DynamicReconfigureCallback(find_moving_objects::FindMovingObjectsPointCloud2Config &config, uint32_t level)
+# endif
+#endif
+#ifdef NODE
+# ifdef PC2ARRAY
+void PointCloud2ArrayInterpreterNode::DynamicReconfigureCallback(find_moving_objects::FindMovingObjectsPointCloud2Config &config, uint32_t level)
+# else
+void PointCloud2InterpreterNode::DynamicReconfigureCallback(find_moving_objects::FindMovingObjectsPointCloud2Config &config, uint32_t level)
+# endif
+#endif
+{
+  std::cout << "Dynamic Reconfigure Callback" << std::endl;
+  for (auto& bank : banks){
+    bank -> reconfigureBankParameters(config);
+  }
+
+}
+
 
 } // namespace find_moving_objects
 

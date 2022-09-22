@@ -2991,4 +2991,37 @@ long Bank::addMessage(const sensor_msgs::PointCloud2 * msg,
   return 0;
 }
 
+void Bank::reconfigureBankParameters(const find_moving_objects::FindMovingObjectsLaserScanConfig &config){
+  bank_argument.base_confidence = config.base_confidence;
+  bank_argument.ema_alpha = config.ema_alpha; 
+  bank_argument.object_threshold_edge_max_delta_range = config.object_threshold_edge_max_delta_range; 
+  bank_argument.object_threshold_min_nr_points = config.object_threshold_min_nr_points; 
+  bank_argument.object_threshold_max_distance = config.object_threshold_max_distance;
+  bank_argument.object_threshold_min_speed = config.object_threshold_min_speed;
+  bank_argument.object_threshold_max_delta_width_in_points = config.object_threshold_max_delta_width_in_points;
+  bank_argument.object_threshold_bank_tracking_max_delta_distance = config.object_threshold_bank_tracking_max_delta_distance; 
+  bank_argument.object_threshold_min_confidence = config.object_threshold_min_confidence;
+}
+
+void Bank::reconfigureBankParameters(const find_moving_objects::FindMovingObjectsPointCloud2Config &config){
+  bank_argument.base_confidence = config.base_confidence;
+  bank_argument.ema_alpha = config.ema_alpha; 
+  bank_argument.object_threshold_edge_max_delta_range = config.object_threshold_edge_max_delta_range; 
+  bank_argument.object_threshold_min_nr_points = config.object_threshold_min_nr_points; 
+  bank_argument.object_threshold_max_distance = config.object_threshold_max_distance;
+  bank_argument.object_threshold_min_speed = config.object_threshold_min_speed;
+  bank_argument.object_threshold_max_delta_width_in_points = config.object_threshold_max_delta_width_in_points;
+  bank_argument.object_threshold_bank_tracking_max_delta_distance = config.object_threshold_bank_tracking_max_delta_distance; 
+  bank_argument.object_threshold_min_confidence = config.object_threshold_min_confidence;
+  bank_argument.points_per_scan = config.points_per_scan;
+  bank_argument.PC2_voxel_leaf_size = config.voxel_leaf_size;
+  if(config.threshold_z_min >= config.threshold_z_max){
+    std::cout << "z_min cannot be larger than z_max" << std::endl;
+  }else{
+    bank_argument.PC2_threshold_z_min = config.threshold_z_min;
+    bank_argument.PC2_threshold_z_max = config.threshold_z_max;
+  }
+}
+
+
 } // namespace find_moving_objects

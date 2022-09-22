@@ -2,6 +2,10 @@
 #include <tf2_ros/buffer.h>
 #include <tf2_ros/transform_listener.h>
 
+
+#include <dynamic_reconfigure/server.h>
+#include <find_moving_objects/FindMovingObjectsPointCloud2Config.h>
+
 #ifdef PC2ARRAY
 #include <find_moving_objects/PointCloud2Array.h>
 #else
@@ -86,6 +90,10 @@ private:
   /* CALLBACK */
   void pointCloud2Callback(const sensor_msgs::PointCloud2::ConstPtr & msg);
 #endif
+
+/* DYNAMIC RECONFIGURE */
+  dynamic_reconfigure::Server<find_moving_objects::FindMovingObjectsPointCloud2Config> dynamic_reconfigure_server_;
+  void DynamicReconfigureCallback(find_moving_objects::FindMovingObjectsPointCloud2Config &config, uint32_t level);
   
 public:
   /* CONSTRUCTOR & DESTRUCTOR */
@@ -111,6 +119,8 @@ public:
   
   void onInit();
 #endif
+/* DYNAMIC RECONFIGURE */
+  void DynamicReconfigureInit();
 };
 
 } // namespace find_moving_objects

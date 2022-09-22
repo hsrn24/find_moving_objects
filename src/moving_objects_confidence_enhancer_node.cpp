@@ -60,6 +60,10 @@
 #include <find_moving_objects/MovingObject.h>
 #include <find_moving_objects/MovingObjectArray.h>
 
+
+#include <dynamic_reconfigure/server.h>
+#include <find_moving_objects/FindMovingObjectsConfidenceEnhancerConfig.h>
+
 using namespace find_moving_objects;
 
 #define MIN(X,Y) (X<Y?X:Y)
@@ -86,6 +90,17 @@ pthread_cond_t g_cond_moa = PTHREAD_COND_INITIALIZER;
 bool g_available_moa = false;
 int g_sender_index = -1;
 int g_nr_senders = 0;
+
+/* DYNAMIC RECONFIGURE */
+  dynamic_reconfigure::Server<find_moving_objects::FindMovingObjectsConfidenceEnhancerConfig> dynamic_reconfigure_server_;
+  dynamic_reconfigure::Server<find_moving_objects::FindMovingObjectsLaserScanConfig>::CallbackType f;
+  f = boost::bind(&DynamicReconfigureCallback, _1, _2);
+  dynamic_reconfigure_server_.setCallback(f);
+
+
+  void DynamicReconfigureCallback(find_moving_objects::FindMovingObjectsConfidenceEnhancerConfig &config, uint32_t level){
+    dynamic_reconfigure_config = config;
+  }
 
 
 /* CALLBACK - USE EXTRA WORKER THREAD TO DO THE ACTUAL WORK */
@@ -585,7 +600,7 @@ int main(int argc, char** argv)
     ROS_ERROR("Failed to create thread for handling MovingObjectArray messages");
     ROS_BREAK();
   }
-  
+  moa_handler.
   // Subscribe to interpreter results
   
   std::string subscribe_topic;

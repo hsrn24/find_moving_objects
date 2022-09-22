@@ -124,6 +124,7 @@ LaserScanInterpreterNode::LaserScanInterpreterNode()
   tf_filter = NULL;
   tf_listener = NULL;
   tf_buffer = NULL;
+  DynamicReconfigureInit();
   
 #ifdef NODE
   onInit();
@@ -495,6 +496,63 @@ void LaserScanInterpreterNode::onInit()
 # endif
 #endif
           this, _1) );
+}
+
+/* DYNAMIC RECONFIGURE */
+#ifdef NODELET
+# ifdef LSARRAY
+void LaserScanArrayInterpreterNodelet::DynamicReconfigureInit()
+# else
+void LaserScanInterpreterNodelet::DynamicReconfigureInit()
+# endif
+#endif
+#ifdef NODE
+# ifdef LSARRAY
+void LaserScanArrayInterpreterNode::DynamicReconfigureInit()
+# else
+void LaserScanInterpreterNode::DynamicReconfigureInit()
+# endif
+#endif
+{
+  dynamic_reconfigure::Server<find_moving_objects::FindMovingObjectsLaserScanConfig>::CallbackType f;
+  #ifdef NODELET
+  # ifdef LSARRAY
+  f = boost::bind(&LaserScanArrayInterpreterNodelet::DynamicReconfigureCallback, this, _1, _2);
+  # else
+  f = boost::bind(&LaserScanInterpreterNodelet::DynamicReconfigureCallback, this, _1, _2);
+  # endif
+  #endif
+  #ifdef NODE
+  # ifdef LSARRAY
+  f = boost::bind(&LaserScanArrayInterpreterNode::DynamicReconfigureCallback, this, _1, _2);
+  # else
+  f = boost::bind(&LaserScanInterpreterNode::DynamicReconfigureCallback, this, _1, _2);
+  # endif
+  #endif
+  dynamic_reconfigure_server_.setCallback(f);
+  std::cout << "Dynamic Reconfigure Initialized" << std::endl;
+}
+
+#ifdef NODELET
+# ifdef LSARRAY
+void LaserScanArrayInterpreterNodelet::DynamicReconfigureCallback(find_moving_objects::FindMovingObjectsLaserScanConfig &config, uint32_t level)
+# else
+void LaserScanInterpreterNodelet::DynamicReconfigureCallback(find_moving_objects::FindMovingObjectsLaserScanConfig &config, uint32_t level)
+# endif
+#endif
+#ifdef NODE
+# ifdef LSARRAY
+void LaserScanArrayInterpreterNode::DynamicReconfigureCallback(find_moving_objects::FindMovingObjectsLaserScanConfig &config, uint32_t level)
+# else
+void LaserScanInterpreterNode::DynamicReconfigureCallback(find_moving_objects::FindMovingObjectsLaserScanConfig &config, uint32_t level)
+# endif
+#endif
+{
+  std::cout << "Dynamic Reconfigure Callback" << std::endl;
+  for (auto& bank : banks){
+    bank -> reconfigureBankParameters(config);
+  }
+
 }
 
 } // namespace find_moving_objects

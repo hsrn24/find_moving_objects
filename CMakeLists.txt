@@ -17,6 +17,7 @@ find_package(catkin REQUIRED COMPONENTS
   sensor_msgs 
   visualization_msgs 
   geometry_msgs
+  dynamic_reconfigure
 )
 #   topic_tools
 
@@ -114,10 +115,11 @@ generate_messages(
 ##     and list every .cfg file to be processed
 
 ## Generate dynamic reconfigure parameters in the 'cfg' folder
-# generate_dynamic_reconfigure_options(
-#   cfg/DynReconf1.cfg
-#   cfg/DynReconf2.cfg
-# )
+generate_dynamic_reconfigure_options(
+  dynamic_reconfigure/FindMovingObjectsLaserScan.cfg
+  dynamic_reconfigure/FindMovingObjectsPointCloud2.cfg
+  dynamic_reconfigure/FindMovingObjectsConfidenceEnhancer.cfg
+  )
 
 ###################################
 ## catkin specific configuration ##
@@ -212,6 +214,7 @@ add_executable(moving_objects_echoer_node src/moving_objects_echoer_node.cpp)
 # add_dependencies(example_d435_voxel_echoer_node option)
 # add_dependencies(example_rplidar_echoer_node option)
 add_dependencies(laserscan_interpreter_node find_moving_objects)
+# add_dependencies(laserscan_interpreter_node ${PROJECT_NAME}_gencfg ${catkin_EXPORTED_TARGETS})
 add_dependencies(LaserScanInterpreterNodelet find_moving_objects)
 add_dependencies(laserscanarray_interpreter_node find_moving_objects ${catkin_EXPORTED_TARGETS})
 add_dependencies(LaserScanArrayInterpreterNodelet find_moving_objects ${catkin_EXPORTED_TARGETS})
@@ -390,7 +393,9 @@ install(TARGETS laserscan_interpreter_node
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
-
+install(FILES nodelet_plugins.xml
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+)
 ## Mark other files for installation (e.g. launch and bag files, etc.)
 # install(FILES
 #   # myfile1

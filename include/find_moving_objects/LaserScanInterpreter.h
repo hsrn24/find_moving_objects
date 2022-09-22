@@ -2,6 +2,11 @@
 #include <tf2_ros/buffer.h>
 #include <tf2_ros/transform_listener.h>
 
+#include <dynamic_reconfigure/server.h>
+#include <find_moving_objects/FindMovingObjectsLaserScanConfig.h>
+
+
+
 #ifdef LSARRAY
 #include <find_moving_objects/LaserScanArray.h>
 #else
@@ -86,6 +91,11 @@ private:
   /* CALLBACK */
   void laserScanCallback(const sensor_msgs::LaserScan::ConstPtr & msg);
 #endif
+
+ /* DYNAMIC RECONFIGURE */
+  dynamic_reconfigure::Server<find_moving_objects::FindMovingObjectsLaserScanConfig> dynamic_reconfigure_server_;
+  void DynamicReconfigureCallback(find_moving_objects::FindMovingObjectsLaserScanConfig &config, uint32_t level);
+
   
 public:
   /* CONSTRUCTOR & DESTRUCTOR */
@@ -111,6 +121,8 @@ public:
   
   void onInit();
 #endif
+/* DYNAMIC RECONFIGURE */
+  void DynamicReconfigureInit();
 };
 
 } // namespace find_moving_objects

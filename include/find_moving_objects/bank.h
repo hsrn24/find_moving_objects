@@ -44,6 +44,10 @@
 #include <sensor_msgs/PointCloud2.h>
 #include <find_moving_objects/MovingObject.h>
 #include <find_moving_objects/MovingObjectArray.h>
+#include <find_moving_objects/FindMovingObjectsLaserScanConfig.h>
+#include <find_moving_objects/FindMovingObjectsPointCloud2Config.h>
+
+
 
 
 namespace find_moving_objects
@@ -581,6 +585,14 @@ public:
                                      const find_moving_objects::BankArgument & ba,
                                      const double delta_time,
                                      const double mo_old_width);
+/**
+ * Give a new set of parameters to the bank, necessary for Dynamic Reconfigure
+ * Overloaded methods for LaserScan node and PointClud2 node
+ */
+
+void reconfigureBankParameters(const find_moving_objects::FindMovingObjectsLaserScanConfig &config);
+void reconfigureBankParameters(const find_moving_objects::FindMovingObjectsPointCloud2Config &config);
+
 };
 
 // template<typename BaseClass, typename T>
