@@ -61,9 +61,6 @@
 #include <find_moving_objects/MovingObjectArray.h>
 
 
-#include <dynamic_reconfigure/server.h>
-#include <find_moving_objects/FindMovingObjectsConfidenceEnhancerConfig.h>
-
 using namespace find_moving_objects;
 
 #define MIN(X,Y) (X<Y?X:Y)
