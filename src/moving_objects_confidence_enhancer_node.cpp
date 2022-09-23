@@ -88,7 +88,6 @@ bool g_available_moa = false;
 int g_sender_index = -1;
 int g_nr_senders = 0;
 
-
 /* CALLBACK - USE EXTRA WORKER THREAD TO DO THE ACTUAL WORK */
 void moaCallback(const find_moving_objects::MovingObjectArray::ConstPtr & msg)
 {
@@ -586,7 +585,6 @@ int main(int argc, char** argv)
     ROS_ERROR("Failed to create thread for handling MovingObjectArray messages");
     ROS_BREAK();
   }
-  moa_handler.
   // Subscribe to interpreter results
   
   std::string subscribe_topic;
