@@ -118,7 +118,6 @@ generate_messages(
 generate_dynamic_reconfigure_options(
   dynamic_reconfigure/FindMovingObjectsLaserScan.cfg
   dynamic_reconfigure/FindMovingObjectsPointCloud2.cfg
-  dynamic_reconfigure/FindMovingObjectsConfidenceEnhancer.cfg
   )
 
 ###################################
